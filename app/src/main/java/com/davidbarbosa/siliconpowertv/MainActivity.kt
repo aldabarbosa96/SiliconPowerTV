@@ -31,7 +31,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!", modifier = modifier
+        text = if (BuildConfig.TMDB_API_KEY.isNotBlank())
+            "TMDB KEY OK"
+        else
+            "TMDB KEY MISSING"
     )
 }
 
