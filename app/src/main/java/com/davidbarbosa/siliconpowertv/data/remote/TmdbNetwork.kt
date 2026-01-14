@@ -14,14 +14,12 @@ object TmdbNetwork {
 
     private const val BASE_URL = "https://api.themoviedb.org/"
 
-    // Añadimos la key a todas las requests
+    // Añadimos key a todas las requests
     private val apiKeyInterceptor = Interceptor { chain ->
         val originalReq = chain.request()
         val originalUrl: HttpUrl = originalReq.url
-
         val newUrl =
             originalUrl.newBuilder().addQueryParameter("api_key", BuildConfig.TMDB_API_KEY).build()
-
         val newReq = originalReq.newBuilder().url(newUrl).build()
 
         chain.proceed(newReq)

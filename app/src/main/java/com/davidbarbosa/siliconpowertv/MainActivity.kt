@@ -6,10 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.davidbarbosa.siliconpowertv.ui.detail.DetailScreen
+import com.davidbarbosa.siliconpowertv.ui.popular.PopularScreen
 import com.davidbarbosa.siliconpowertv.ui.theme.SiliconPowerTVTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,31 +19,29 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             SiliconPowerTVTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController, startDestination = "popular"
+                    ) {
+                        composable("popular") {
+                            PopularScreen(onItemClick = { id ->
+                                navController.navigate("detail/$id")
+                            })
+                        }
+
+                        composable("detail/{id}") { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id")?.toLongOrNull()
+                                ?: return@composable
+
+                            DetailScreen(tvId = id)
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = if (BuildConfig.TMDB_API_KEY.isNotBlank())
-            "TMDB KEY OK"
-        else
-            "TMDB KEY MISSING"
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SiliconPowerTVTheme {
-        Greeting("Android")
     }
 }
