@@ -36,3 +36,6 @@ La API key se carga desde `local.properties` (no se sube a GitHub).
 Añade esta línea en tu `local.properties`:
 
 **TMDB_API_KEY=INTRODUCIR_KEY_AQUI**
+
+
+Nota: V2 pendiente (offline + multiidioma + dark/orientation)

@@ -12,12 +12,6 @@ import com.davidbarbosa.siliconpowertv.data.paging.PopularPagingSource
 
 
 class TvRepository {
-
-    suspend fun getPopular(page: Int, language: String): List<TvShow> {
-        val resp = TmdbNetwork.service.getPopularTv(page = page, language = language)
-        return resp.results.map { it.toDomain() }
-    }
-
     suspend fun getDetail(tvId: Long, language: String): TvShowDetail {
         val dto = TmdbNetwork.service.getTvDetail(tvId = tvId, language = language)
         return dto.toDomain()
@@ -25,12 +19,9 @@ class TvRepository {
 
     fun popularPaging(language: String): Flow<PagingData<TvShow>> {
         return Pager(config = PagingConfig(
-            pageSize = 20, enablePlaceholders = false
+            pageSize = 20, initialLoadSize = 20, enablePlaceholders = false
         ), pagingSourceFactory = {
-            PopularPagingSource(
-                service = com.davidbarbosa.siliconpowertv.data.remote.TmdbNetwork.service,
-                language = language
-            )
+            PopularPagingSource(service = TmdbNetwork.service, language = language)
         }).flow
     }
 
