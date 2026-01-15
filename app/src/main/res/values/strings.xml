@@ -14,6 +14,9 @@
     <string name="no_seasons">-</string>
     <string name="no_description">(Sin descripción)</string>
 
+    <string name="year">Año: %1$s</string>
+    <string name="genres">Géneros: %1$s</string>
+
     <string name="offline_cache_banner">Sin conexión. Mostrando datos guardados.</string>
     <string name="offline_no_cache_detail">Sin conexión. Carga esta serie una vez con internet para verla offline.</string>
 

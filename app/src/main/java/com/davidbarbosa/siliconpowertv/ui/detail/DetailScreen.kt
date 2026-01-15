@@ -23,6 +23,8 @@ import com.davidbarbosa.siliconpowertv.data.local.LanguageProvider
 private fun tmdbImageUrl(path: String?): String? =
     path?.let { "https://image.tmdb.org/t/p/w780$it" }
 
+private fun yearFromDate(date: String?): String? = date?.takeIf { it.length >= 4 }?.substring(0, 4)
+
 @Composable
 fun DetailScreen(
     tvId: Long, vm: DetailViewModel = hiltViewModel()
@@ -70,6 +72,13 @@ fun DetailScreen(
                 }
 
                 Text(item.name)
+
+                val year = yearFromDate(item.firstAirDate) ?: stringResource(R.string.no_seasons)
+                Text(stringResource(R.string.year, year))
+
+                val genres = if (item.genres.isNotEmpty()) item.genres.joinToString(", ")
+                else stringResource(R.string.no_seasons)
+                Text(stringResource(R.string.genres, genres))
 
                 val rating = String.format("%.1f", item.voteAverage)
                 Text(stringResource(R.string.rating, rating))

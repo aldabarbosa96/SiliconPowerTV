@@ -14,5 +14,7 @@ data class TvDetailEntity(
     val backdropPath: String?,
     val voteAverage: Double,
     val numberOfSeasons: Int?,
+    val firstAirDate: String?,
+    val genresCsv: String?,
     val cachedAtMs: Long
 )

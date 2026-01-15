@@ -24,16 +24,16 @@ class TvRepository @Inject constructor(
 ) {
 
     suspend fun getDetail(tvId: Long, language: String): TvShowDetail {
-        // Room primero
         val cached = tvDetailDao.get(tvId, language)
         if (cached != null) {
             return cached.toDomain()
         }
 
-        // si no hay, TMDB
         val dto = service.getTvDetail(tvId = tvId, language = language)
 
-        // guardamos en Room
+        val genresList =
+            (dto.genres ?: emptyList()).map { it.name.trim() }.filter { it.isNotBlank() }
+
         tvDetailDao.upsert(
             TvDetailEntity(
                 id = dto.id,
@@ -44,11 +44,12 @@ class TvRepository @Inject constructor(
                 backdropPath = dto.backdropPath,
                 voteAverage = dto.voteAverage,
                 numberOfSeasons = dto.numberOfSeasons,
+                firstAirDate = dto.firstAirDate,
+                genresCsv = genresList.joinToString("|"),
                 cachedAtMs = System.currentTimeMillis()
             )
         )
 
-        // devolvemos domain
         return dto.toDomain()
     }
 

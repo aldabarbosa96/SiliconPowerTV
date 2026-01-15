@@ -29,6 +29,10 @@ data class TvItemDto(
     @Json(name = "vote_average") val voteAverage: Double
 )
 
+data class GenreDto(
+    val id: Int, val name: String
+)
+
 data class TvDetailDto(
     val id: Long,
     val name: String,
@@ -36,5 +40,7 @@ data class TvDetailDto(
     @Json(name = "poster_path") val posterPath: String?,
     @Json(name = "backdrop_path") val backdropPath: String?,
     @Json(name = "vote_average") val voteAverage: Double,
-    @Json(name = "number_of_seasons") val numberOfSeasons: Int?
+    @Json(name = "number_of_seasons") val numberOfSeasons: Int?,
+    @Json(name = "first_air_date") val firstAirDate: String?,
+    val genres: List<GenreDto>?
 )
