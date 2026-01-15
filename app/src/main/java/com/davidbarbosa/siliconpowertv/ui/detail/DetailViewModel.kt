@@ -19,7 +19,7 @@ class DetailViewModel(
     private val _state = MutableStateFlow(DetailUiState(loading = true))
     val state: StateFlow<DetailUiState> = _state
 
-    fun load(tvId: Long, language: String = "es-ES") {
+    fun load(tvId: Long, language: String) {
         _state.value = DetailUiState(loading = true)
 
         viewModelScope.launch {

@@ -7,30 +7,35 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.davidbarbosa.siliconpowertv.R
+import com.davidbarbosa.siliconpowertv.data.local.LanguageProvider
 
 @Composable
 fun PopularScreen(
     onItemClick: (Long) -> Unit = {},
     vm: PopularViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val pagingItems = vm.popular(language = "es-ES").collectAsLazyPagingItems()
+    val language = LanguageProvider.tmdbLanguage()
+    val flow = remember(language) { vm.popular(language) }
+    val pagingItems = flow.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(count = pagingItems.itemCount, key = { index ->
-            val id = pagingItems[index]?.id ?: -1L
-            "$id-$index"
-        }) { index ->
+        items(count = pagingItems.itemCount,
+            key = { index -> "${pagingItems[index]?.id ?: -1L}-$index" }) { index ->
             val item = pagingItems[index]
             if (item != null) {
-                Text(text = "• ${item.name}  (${String.format("%.1f", item.voteAverage)})",
+                val rating = String.format("%.1f", item.voteAverage)
+                Text(text = "• ${item.name}  ($rating)",
                     modifier = Modifier
                         .padding(vertical = 8.dp)
                         .clickable { onItemClick(item.id) })
@@ -38,14 +43,22 @@ fun PopularScreen(
         }
 
         when (val state = pagingItems.loadState.refresh) {
-            is LoadState.Loading -> item { Text("Cargando...") }
-            is LoadState.Error -> item { Text("Error: ${state.error.message ?: "desconocido"}") }
+            is LoadState.Loading -> item { Text(stringResource(R.string.loading)) }
+            is LoadState.Error -> item {
+                val msg = state.error.message ?: stringResource(R.string.error_unknown)
+                Text(stringResource(R.string.error_generic, msg))
+            }
+
             else -> {}
         }
 
         when (val state = pagingItems.loadState.append) {
-            is LoadState.Loading -> item { Text("Cargando más...") }
-            is LoadState.Error -> item { Text("Error al paginar: ${state.error.message ?: "desconocido"}") }
+            is LoadState.Loading -> item { Text(stringResource(R.string.loading_more)) }
+            is LoadState.Error -> item {
+                val msg = state.error.message ?: stringResource(R.string.error_unknown)
+                Text(stringResource(R.string.error_paging, msg))
+            }
+
             else -> {}
         }
     }

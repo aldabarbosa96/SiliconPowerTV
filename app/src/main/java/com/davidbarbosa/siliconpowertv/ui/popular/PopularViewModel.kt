@@ -12,6 +12,6 @@ class PopularViewModel(
     private val repo: TvRepository = TvRepository()
 ) : ViewModel() {
 
-    fun popular(language: String = "es-ES"): Flow<PagingData<TvShow>> =
+    fun popular(language: String): Flow<PagingData<TvShow>> =
         repo.popularPaging(language).cachedIn(viewModelScope)
 }

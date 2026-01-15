@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">SiliconPowerTV</string>
+
+    <string name="loading">Cargando…</string>
+    <string name="loading_more">Cargando más…</string>
+    <string name="loading_detail">Cargando detalle…</string>
+
+    <string name="error_generic">Error: %1$s</string>
+    <string name="error_unknown">Error desconocido</string>
+    <string name="error_paging">Error al paginar: %1$s</string>
+
+    <string name="rating">Nota: %1$s</string>
+    <string name="seasons">Temporadas: %1$s</string>
+    <string name="no_seasons">-</string>
+    <string name="no_description">(Sin descripción)</string>
 </resources>
