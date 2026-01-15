@@ -1,19 +1,23 @@
 package com.davidbarbosa.siliconpowertv.data.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.davidbarbosa.siliconpowertv.data.remote.TmdbNetwork
+import com.davidbarbosa.siliconpowertv.data.paging.PopularPagingSource
+import com.davidbarbosa.siliconpowertv.data.remote.TmdbService
 import com.davidbarbosa.siliconpowertv.data.remote.toDomain
 import com.davidbarbosa.siliconpowertv.domain.model.TvShow
 import com.davidbarbosa.siliconpowertv.domain.model.TvShowDetail
 import kotlinx.coroutines.flow.Flow
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import com.davidbarbosa.siliconpowertv.data.paging.PopularPagingSource
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class TvRepository {
+@Singleton
+class TvRepository @Inject constructor(
+    private val service: TmdbService
+) {
     suspend fun getDetail(tvId: Long, language: String): TvShowDetail {
-        val dto = TmdbNetwork.service.getTvDetail(tvId = tvId, language = language)
+        val dto = service.getTvDetail(tvId = tvId, language = language)
         return dto.toDomain()
     }
 
@@ -21,8 +25,7 @@ class TvRepository {
         return Pager(config = PagingConfig(
             pageSize = 20, initialLoadSize = 20, enablePlaceholders = false
         ), pagingSourceFactory = {
-            PopularPagingSource(service = TmdbNetwork.service, language = language)
+            PopularPagingSource(service = service, language = language)
         }).flow
     }
-
 }

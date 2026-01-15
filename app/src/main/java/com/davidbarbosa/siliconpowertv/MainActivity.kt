@@ -13,7 +13,9 @@ import androidx.navigation.compose.rememberNavController
 import com.davidbarbosa.siliconpowertv.ui.detail.DetailScreen
 import com.davidbarbosa.siliconpowertv.ui.popular.PopularScreen
 import com.davidbarbosa.siliconpowertv.ui.theme.SiliconPowerTVTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

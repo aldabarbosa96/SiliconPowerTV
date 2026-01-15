@@ -11,12 +11,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.davidbarbosa.siliconpowertv.R
 import com.davidbarbosa.siliconpowertv.data.local.LanguageProvider
 
 @Composable
 fun DetailScreen(
-    tvId: Long, vm: DetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    tvId: Long, vm: DetailViewModel = hiltViewModel()
 ) {
     val state by vm.state.collectAsState()
     val language = LanguageProvider.tmdbLanguage()
@@ -50,7 +51,6 @@ fun DetailScreen(
                 Text(stringResource(R.string.seasons, seasons))
 
                 Text("")
-
                 Text(item.overview.ifBlank { stringResource(R.string.no_description) })
             }
         }

@@ -4,16 +4,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.davidbarbosa.siliconpowertv.data.repository.TvRepository
 import com.davidbarbosa.siliconpowertv.domain.model.TvShowDetail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class DetailUiState(
     val loading: Boolean = false, val item: TvShowDetail? = null, val error: String? = null
 )
 
-class DetailViewModel(
-    private val repo: TvRepository = TvRepository()
+@HiltViewModel
+class DetailViewModel @Inject constructor(
+    private val repo: TvRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DetailUiState(loading = true))

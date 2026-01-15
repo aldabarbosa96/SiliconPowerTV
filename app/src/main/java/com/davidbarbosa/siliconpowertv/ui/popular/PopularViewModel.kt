@@ -6,10 +6,13 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.davidbarbosa.siliconpowertv.data.repository.TvRepository
 import com.davidbarbosa.siliconpowertv.domain.model.TvShow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class PopularViewModel(
-    private val repo: TvRepository = TvRepository()
+@HiltViewModel
+class PopularViewModel @Inject constructor(
+    private val repo: TvRepository
 ) : ViewModel() {
 
     fun popular(language: String): Flow<PagingData<TvShow>> =

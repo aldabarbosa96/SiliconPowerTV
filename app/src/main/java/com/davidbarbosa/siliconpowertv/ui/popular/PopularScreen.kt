@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.davidbarbosa.siliconpowertv.R
@@ -18,8 +19,7 @@ import com.davidbarbosa.siliconpowertv.data.local.LanguageProvider
 
 @Composable
 fun PopularScreen(
-    onItemClick: (Long) -> Unit = {},
-    vm: PopularViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    onItemClick: (Long) -> Unit = {}, vm: PopularViewModel = hiltViewModel()
 ) {
     val language = LanguageProvider.tmdbLanguage()
     val flow = remember(language) { vm.popular(language) }
