@@ -13,6 +13,7 @@ import com.davidbarbosa.siliconpowertv.data.remote.toDomain
 import com.davidbarbosa.siliconpowertv.domain.model.TvShow
 import com.davidbarbosa.siliconpowertv.domain.model.TvShowDetail
 import kotlinx.coroutines.flow.Flow
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,11 +26,13 @@ class TvRepository @Inject constructor(
 
     suspend fun getDetail(tvId: Long, language: String): TvShowDetail {
         val cached = tvDetailDao.get(tvId, language)
-        if (cached != null) {
-            return cached.toDomain()
-        }
+        if (cached != null) return cached.toDomain()
 
-        val dto = service.getTvDetail(tvId = tvId, language = language)
+        val dto = try {
+            service.getTvDetail(tvId = tvId, language = language)
+        } catch (e: IOException) {
+            throw IOException("OFFLINE_NO_CACHE")
+        }
 
         val genresList =
             (dto.genres ?: emptyList()).map { it.name.trim() }.filter { it.isNotBlank() }

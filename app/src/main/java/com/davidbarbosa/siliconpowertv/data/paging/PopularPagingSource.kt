@@ -17,10 +17,10 @@ class PopularPagingSource(
             val page = params.key ?: 1
             val resp = service.getPopularTv(page = page, language = language)
 
-            // 1) Datos para UI
+            // 1) datos para UI
             val data = resp.results.map { it.toDomain() }
 
-            // 2) Guardar caché en Room
+            // 2) guardamso caché en Room
             val now = System.currentTimeMillis()
             val baseIndex = (page - 1L) * 20L // TMDB parece dar 20 por página
             val entities = resp.results.mapIndexed { index, dto ->

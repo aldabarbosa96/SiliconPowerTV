@@ -45,7 +45,7 @@ class DetailViewModel @Inject constructor(
                     loading = false, item = item, recommendations = recs
                 )
             } catch (e: Exception) {
-                val code = if (e is IOException) "OFFLINE_NO_CACHE" else (e.message ?: "Error")
+                val code = e.message ?: "Error"
                 _state.value = DetailUiState(loading = false, error = code)
             }
         }
