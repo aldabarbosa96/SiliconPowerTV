@@ -14,4 +14,7 @@
     <string name="seasons">Seasons: %1$s</string>
     <string name="no_seasons">-</string>
     <string name="no_description">(No description)</string>
+
+    <string name="offline_cache_banner">No internet. Showing cached data.</string>
+
 </resources>

@@ -3,6 +3,7 @@ package com.davidbarbosa.siliconpowertv.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.davidbarbosa.siliconpowertv.data.local.db.PopularTvDao
 import com.davidbarbosa.siliconpowertv.data.paging.PopularPagingSource
 import com.davidbarbosa.siliconpowertv.data.remote.TmdbService
 import com.davidbarbosa.siliconpowertv.data.remote.toDomain
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class TvRepository @Inject constructor(
-    private val service: TmdbService
+    private val service: TmdbService, private val popularTvDao: PopularTvDao
 ) {
     suspend fun getDetail(tvId: Long, language: String): TvShowDetail {
         val dto = service.getTvDetail(tvId = tvId, language = language)
@@ -25,7 +26,17 @@ class TvRepository @Inject constructor(
         return Pager(config = PagingConfig(
             pageSize = 20, initialLoadSize = 20, enablePlaceholders = false
         ), pagingSourceFactory = {
-            PopularPagingSource(service = service, language = language)
+            PopularPagingSource(
+                service = service, dao = popularTvDao, language = language
+            )
         }).flow
+    }
+
+    suspend fun getCachedPopular(language: String): List<TvShow> {
+        return popularTvDao.getAllByLanguage(language).map { e ->
+            TvShow(
+                id = e.id, name = e.name, posterPath = e.posterPath, voteAverage = e.voteAverage
+            )
+        }
     }
 }
