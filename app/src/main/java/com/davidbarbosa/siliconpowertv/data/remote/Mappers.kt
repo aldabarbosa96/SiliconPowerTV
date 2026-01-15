@@ -11,6 +11,8 @@ fun TvDetailDto.toDomain(): TvShowDetail = TvShowDetail(
     id = id,
     name = name,
     overview = overview,
+    posterPath = posterPath,
+    backdropPath = backdropPath,
     voteAverage = voteAverage,
     numberOfSeasons = numberOfSeasons
 )

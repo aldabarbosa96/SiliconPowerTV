@@ -4,6 +4,8 @@ data class TvShowDetail(
     val id: Long,
     val name: String,
     val overview: String,
+    val posterPath: String?,
+    val backdropPath: String?,
     val voteAverage: Double,
     val numberOfSeasons: Int?
 )

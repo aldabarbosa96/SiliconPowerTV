@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import com.davidbarbosa.siliconpowertv.data.local.db.PopularTvDao
 import com.davidbarbosa.siliconpowertv.data.local.db.TvDetailDao
 import com.davidbarbosa.siliconpowertv.data.local.db.TvDetailEntity
+import com.davidbarbosa.siliconpowertv.data.local.db.toDomain
 import com.davidbarbosa.siliconpowertv.data.paging.PopularPagingSource
 import com.davidbarbosa.siliconpowertv.data.remote.TmdbService
 import com.davidbarbosa.siliconpowertv.data.remote.toDomain
@@ -21,23 +22,18 @@ class TvRepository @Inject constructor(
     private val popularTvDao: PopularTvDao,
     private val tvDetailDao: TvDetailDao
 ) {
+
     suspend fun getDetail(tvId: Long, language: String): TvShowDetail {
-        // 1) Room primero
+        // Room primero
         val cached = tvDetailDao.get(tvId, language)
         if (cached != null) {
-            return TvShowDetail(
-                id = cached.id,
-                name = cached.name,
-                overview = cached.overview,
-                voteAverage = cached.voteAverage,
-                numberOfSeasons = cached.numberOfSeasons
-            )
+            return cached.toDomain()
         }
 
-        // 2) Si no hay, TMDB
+        // si no hay, TMDB
         val dto = service.getTvDetail(tvId = tvId, language = language)
 
-        // 3) Guardar en Room
+        // guardamos en Room
         tvDetailDao.upsert(
             TvDetailEntity(
                 id = dto.id,
@@ -51,9 +47,10 @@ class TvRepository @Inject constructor(
                 cachedAtMs = System.currentTimeMillis()
             )
         )
+
+        // devolvemos domain
         return dto.toDomain()
     }
-
 
     fun popularPaging(language: String): Flow<PagingData<TvShow>> {
         return Pager(config = PagingConfig(

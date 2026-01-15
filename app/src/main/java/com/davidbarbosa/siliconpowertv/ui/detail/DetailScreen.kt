@@ -1,7 +1,10 @@
 package com.davidbarbosa.siliconpowertv.ui.detail
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -9,11 +12,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.davidbarbosa.siliconpowertv.R
 import com.davidbarbosa.siliconpowertv.data.local.LanguageProvider
+
+private fun tmdbImageUrl(path: String?): String? =
+    path?.let { "https://image.tmdb.org/t/p/w780$it" }
 
 @Composable
 fun DetailScreen(
@@ -35,17 +43,32 @@ fun DetailScreen(
             state.loading -> Text(stringResource(R.string.loading_detail))
 
             state.error != null -> {
-                val code = state.error ?: ""
-                val msg = if (code == "OFFLINE_NO_CACHE") {
-                    stringResource(R.string.offline_no_cache_detail)
+                val err = state.error
+
+                if (err == "OFFLINE_NO_CACHE") {
+                    Text(stringResource(R.string.offline_no_cache_detail))
                 } else {
-                    code
+                    val msg = err ?: stringResource(R.string.error_unknown)
+                    Text(stringResource(R.string.error_generic, msg))
                 }
-                Text(msg)
             }
 
             state.item != null -> {
                 val item = state.item!!
+                val imagePath = item.backdropPath ?: item.posterPath
+                if (imagePath != null) {
+                    AsyncImage(
+                        model = tmdbImageUrl(imagePath),
+                        contentDescription = item.name,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        contentScale = ContentScale.Crop
+                    )
+
+                    Spacer(Modifier.height(12.dp))
+                }
+
                 Text(item.name)
 
                 val rating = String.format("%.1f", item.voteAverage)
@@ -55,7 +78,8 @@ fun DetailScreen(
                     item.numberOfSeasons?.toString() ?: stringResource(R.string.no_seasons)
                 Text(stringResource(R.string.seasons, seasons))
 
-                Text("")
+                Spacer(Modifier.height(12.dp))
+
                 Text(item.overview.ifBlank { stringResource(R.string.no_description) })
             }
         }

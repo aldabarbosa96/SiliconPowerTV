@@ -1,4 +1,4 @@
-package com.davidbarbosa.siliconpowertv.ui.popular
+package com.davidbarbosa.siliconpowertv.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
