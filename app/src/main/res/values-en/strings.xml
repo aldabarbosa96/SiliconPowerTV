@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SiliconPowerTV</string>
+
+    <string name="loading">Loading…</string>
+    <string name="loading_more">Loading more…</string>
+    <string name="loading_detail">Loading details…</string>
+
+    <string name="error_generic">Error: %1$s</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_paging">Paging error: %1$s</string>
+
+    <string name="rating">Rating: %1$s</string>
+    <string name="seasons">Seasons: %1$s</string>
+    <string name="no_seasons">-</string>
+    <string name="no_description">(No description)</string>
+
+    <string name="year">Year: %1$s</string>
+    <string name="genres">Genres: %1$s</string>
+
+    <string name="offline_cache_banner">No internet. Showing cached data.</string>
+    <string name="offline_no_cache_detail">No internet. Open this show once online to view it offline.</string>
+
+    <string name="recommendations_title">You may also like</string>
+
+</resources>

@@ -11,9 +11,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.davidbarbosa.siliconpowertv.ui.detail.DetailScreen
-import com.davidbarbosa.siliconpowertv.ui.popular.PopularScreen
+import com.davidbarbosa.siliconpowertv.ui.list.PopularScreen
 import com.davidbarbosa.siliconpowertv.ui.theme.SiliconPowerTVTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +39,9 @@ class MainActivity : ComponentActivity() {
                             val id = backStackEntry.arguments?.getString("id")?.toLongOrNull()
                                 ?: return@composable
 
-                            DetailScreen(tvId = id)
+                            DetailScreen(tvId = id, onItemClick = { recId ->
+                                navController.navigate("detail/$recId")
+                            })
                         }
                     }
                 }
