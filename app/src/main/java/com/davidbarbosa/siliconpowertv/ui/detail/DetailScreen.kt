@@ -35,8 +35,13 @@ fun DetailScreen(
             state.loading -> Text(stringResource(R.string.loading_detail))
 
             state.error != null -> {
-                val msg = state.error ?: stringResource(R.string.error_unknown)
-                Text(stringResource(R.string.error_generic, msg))
+                val code = state.error ?: ""
+                val msg = if (code == "OFFLINE_NO_CACHE") {
+                    stringResource(R.string.offline_no_cache_detail)
+                } else {
+                    code
+                }
+                Text(msg)
             }
 
             state.item != null -> {

@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 data class DetailUiState(
@@ -30,8 +31,10 @@ class DetailViewModel @Inject constructor(
                 val item = repo.getDetail(tvId = tvId, language = language)
                 _state.value = DetailUiState(loading = false, item = item)
             } catch (e: Exception) {
-                _state.value = DetailUiState(loading = false, error = e.message ?: "Error")
+                val code = if (e is IOException) "OFFLINE_NO_CACHE" else (e.message ?: "Error")
+                _state.value = DetailUiState(loading = false, error = code)
             }
+
         }
     }
 }

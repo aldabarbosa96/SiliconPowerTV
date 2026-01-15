@@ -4,12 +4,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [
-        PopularTvEntity::class
-    ],
-    version = 1,
-    exportSchema = true
+    entities = [PopularTvEntity::class, TvDetailEntity::class], version = 2, exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun popularTvDao(): PopularTvDao
+    abstract fun tvDetailDao(): TvDetailDao
 }
