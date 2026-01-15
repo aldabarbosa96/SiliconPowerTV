@@ -39,7 +39,9 @@ class MainActivity : ComponentActivity() {
                             val id = backStackEntry.arguments?.getString("id")?.toLongOrNull()
                                 ?: return@composable
 
-                            DetailScreen(tvId = id)
+                            DetailScreen(tvId = id, onItemClick = { recId ->
+                                navController.navigate("detail/$recId")
+                            })
                         }
                     }
                 }
