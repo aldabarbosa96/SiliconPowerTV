@@ -70,4 +70,10 @@ class TvRepository @Inject constructor(
             )
         }
     }
+
+    suspend fun getRecommendations(tvId: Long, language: String, limit: Int = 10): List<TvShow> {
+        val resp = service.getTvRecommendations(tvId = tvId, page = 1, language = language)
+        return resp.results.asSequence().filter { it.id != tvId }.take(limit).map { it.toDomain() }
+            .toList()
+    }
 }

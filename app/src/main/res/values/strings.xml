@@ -20,4 +20,5 @@
     <string name="offline_cache_banner">Sin conexión. Mostrando datos guardados.</string>
     <string name="offline_no_cache_detail">Sin conexión. Carga esta serie una vez con internet para verla offline.</string>
 
+    <string name="recommendations_title">Te puede gustar</string>
 </resources>

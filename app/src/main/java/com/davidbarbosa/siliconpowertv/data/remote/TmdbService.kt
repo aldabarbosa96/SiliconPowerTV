@@ -16,6 +16,13 @@ interface TmdbService {
     suspend fun getTvDetail(
         @Path("tv_id") tvId: Long, @Query("language") language: String = "es-ES"
     ): TvDetailDto
+
+    @GET("3/tv/{tv_id}/recommendations")
+    suspend fun getTvRecommendations(
+        @Path("tv_id") tvId: Long,
+        @Query("page") page: Int = 1,
+        @Query("language") language: String = "es-ES"
+    ): TvRecommendationsResponseDto
 }
 
 data class PopularTvResponseDto(
@@ -44,3 +51,9 @@ data class TvDetailDto(
     @Json(name = "first_air_date") val firstAirDate: String?,
     val genres: List<GenreDto>?
 )
+
+
+data class TvRecommendationsResponseDto(
+    val page: Int, val results: List<TvItemDto>, @Json(name = "total_pages") val totalPages: Int
+)
+

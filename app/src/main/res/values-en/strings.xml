@@ -21,4 +21,6 @@
     <string name="offline_cache_banner">No internet. Showing cached data.</string>
     <string name="offline_no_cache_detail">No internet. Open this show once online to view it offline.</string>
 
+    <string name="recommendations_title">You may also like</string>
+
 </resources>
