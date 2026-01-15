@@ -16,6 +16,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Configuración de red (OkHttp, Retrofit y Moshi).
+ * Añadimos un interceptor para incluir la api_key automáticamente y dejamos logging básico para facilitar debugging sin demasiado ruido.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

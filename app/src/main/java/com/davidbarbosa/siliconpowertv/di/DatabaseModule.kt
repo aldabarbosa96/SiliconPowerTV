@@ -14,6 +14,10 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+/**
+ * Configuración de Room (DB y DAOs).
+ * Incluimos la migración necesaria del detalle y dejamos fallback destructivo como salida simple para una prueba técnica si cambiase el esquema.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {

@@ -5,6 +5,11 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * Endpoints de TMDB.
+ * La api_key se añade desde OkHttp (interceptor) para no repetir parámetros ni ensuciar las llamadas.
+ */
+
 interface TmdbService {
 
     @GET("3/tv/popular")

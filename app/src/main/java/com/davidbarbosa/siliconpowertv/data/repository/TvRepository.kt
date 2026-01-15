@@ -17,6 +17,12 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Centralizamos aquí el acceso a datos (TMDB + Room) para no mezclarlo con la UI.
+ * En detalle consultamos primero Room y, si no hay caché, pedimos a la API y guardamos el resultado.
+ * En listado devolvemos Paging y aprovechamos para cachear páginas y poder mostrar datos offline.
+ */
+
 @Singleton
 class TvRepository @Inject constructor(
     private val service: TmdbService,

@@ -8,6 +8,10 @@ import com.davidbarbosa.siliconpowertv.data.remote.TmdbService
 import com.davidbarbosa.siliconpowertv.data.remote.toDomain
 import com.davidbarbosa.siliconpowertv.domain.model.TvShow
 
+/**
+ * Cargamos páginas desde TMDB y guardamos en Room con un índice de orden para poder reconstruir
+ * el listado si el refresh falla o no hay conexión.
+ */
 class PopularPagingSource(
     private val service: TmdbService, private val dao: PopularTvDao, private val language: String
 ) : PagingSource<Int, TvShow>() {
@@ -17,12 +21,12 @@ class PopularPagingSource(
             val page = params.key ?: 1
             val resp = service.getPopularTv(page = page, language = language)
 
-            // 1) datos para UI
+            // datos para UI
             val data = resp.results.map { it.toDomain() }
 
-            // 2) guardamso caché en Room
+            // guardamso caché en Room
             val now = System.currentTimeMillis()
-            val baseIndex = (page - 1L) * 20L // TMDB parece dar 20 por página
+            val baseIndex = (page - 1L) * 20L // TMDB parece dar 20aprox por página
             val entities = resp.results.mapIndexed { index, dto ->
                 PopularTvEntity(
                     id = dto.id,

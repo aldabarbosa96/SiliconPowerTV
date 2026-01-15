@@ -13,6 +13,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Exponemos el Flow paginado y, si la carga inicial falla por red, tiramos del caché de Room
+ * para mostrar contenido guardado.
+ */
+
 data class PopularCacheState(
     val loading: Boolean = false, val items: List<TvShow> = emptyList(), val error: String? = null
 )

@@ -12,6 +12,10 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
+/**
+ * Cargamos el detalle con soporte de caché y, aparte, intentamos obtener recomendaciones.
+ * Si las recomendaciones fallan, preferimos que no pete.
+ */
 data class DetailUiState(
     val loading: Boolean = false,
     val item: TvShowDetail? = null,
