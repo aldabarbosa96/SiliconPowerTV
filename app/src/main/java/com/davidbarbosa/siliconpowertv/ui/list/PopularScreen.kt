@@ -1,7 +1,8 @@
 package com.davidbarbosa.siliconpowertv.ui.list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarHalf
+import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -37,28 +42,18 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.davidbarbosa.siliconpowertv.R
 import com.davidbarbosa.siliconpowertv.data.local.LanguageProvider
+import androidx.compose.material3.Icon
 
 private fun posterUrl(path: String?): String? = path?.let { "https://image.tmdb.org/t/p/w342$it" }
 
 @Composable
-private fun RatingBadge(voteAverage: Double) {
-    val rating = String.format("%.1f", voteAverage)
+private fun Badge(text: String) {
     Surface(
-        shape = RoundedCornerShape(999.dp), tonalElevation = 2.dp
-    ) {
-        Text(
-            text = stringResource(R.string.rating, rating),
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold
-        )
-    }
-}
-
-@Composable
-private fun OfflineChip(text: String) {
-    Surface(
-        shape = RoundedCornerShape(999.dp), tonalElevation = 2.dp
+        shape = RoundedCornerShape(999.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
     ) {
         Text(
             text = text,
@@ -68,6 +63,59 @@ private fun OfflineChip(text: String) {
         )
     }
 }
+
+
+@Composable
+private fun RatingBadge(voteAverage: Double) {
+    val rating = String.format("%.1f", voteAverage)
+    Badge(text = stringResource(R.string.rating, rating))
+}
+
+@Composable
+private fun OfflineChip(text: String) {
+    Badge(text = text)
+}
+
+@Composable
+private fun StarRating10(
+    voteAverage: Double, modifier: Modifier = Modifier
+) {
+    val v = voteAverage.coerceIn(0.0, 10.0)
+    val full = kotlin.math.floor(v).toInt()
+    val hasHalf = (v - full) >= 0.5
+    val empty = 10 - full - (if (hasHalf) 1 else 0)
+
+    Row(
+        modifier = modifier
+    ) {
+        repeat(full) {
+            Icon(
+                imageVector = Icons.Filled.Star,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.size(12.dp)
+            )
+        }
+        if (hasHalf) {
+            Icon(
+                imageVector = Icons.Filled.StarHalf,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.size(12.dp)
+            )
+        }
+        repeat(empty) {
+            Icon(
+                imageVector = Icons.Filled.StarBorder,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f),
+                modifier = Modifier.size(12.dp)
+            )
+        }
+    }
+
+}
+
 
 @Composable
 private fun TvShowRow(
@@ -79,7 +127,11 @@ private fun TvShowRow(
             .padding(vertical = 8.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(14.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(
             modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically
@@ -103,6 +155,8 @@ private fun TvShowRow(
                 )
                 Spacer(Modifier.height(8.dp))
                 RatingBadge(voteAverage = voteAverage)
+                Spacer(Modifier.height(6.dp))
+                StarRating10(voteAverage = voteAverage)
             }
         }
     }
