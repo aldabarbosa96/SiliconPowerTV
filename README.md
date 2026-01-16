@@ -52,5 +52,14 @@ actualmente no se ha integrado esa funcionalidad ni arquitectura específica req
 La API key se carga desde `local.properties` (no se sube a GitHub).  
 Añade esto:
 `TMDB_API_KEY=INTRODUCIR_KEY_AQUI`
+ 
+## Notas
 
-La key se inyecta automáticamente en cada request con un interceptor de OkHttp.
+- **Tiempo invertido:** aproximadamente **12–14 horas**.
+- **Uso de IA:** **sí**, he usado **ChatGPT** como apoyo durante el desarrollo, principalmente para:
+  - entender conceptos y requisitos de la prueba,
+  - aprender/confirmar el uso de librerías y frameworks requeridos (p. ej. Compose, Paging 3, Hilt),
+  - refrescar conocimientos de **Kotlin** (mi experiencia principal es en **Java**, lo que me ha ayudado a asimilar Kotlin y la arquitectura rápidamente).
+
+La implementación final, las decisiones técnicas y la integración de la solución se han realizado por mí.
+
